@@ -1,0 +1,61 @@
+const axios = require("axios");
+
+function postWorklog(url, token, comment, timeSpentHours, started) {
+  const config = {
+    headers: {
+      Authorization: `Basic ${token}`,
+      "Content-Type": "application/json",
+    },
+    params: {
+      adjustEstimate: "leave",
+      // , notifyUsers: false
+    },
+  };
+
+  //jira api requires timeSpent to be passed first. TimeSpenSecond from the documentation leads to 500
+  //according to docs we need to use ADF as a format for comment. But for some reason it causes a pasing error and returns 400
+
+  const data = {
+    timeSpent: formatDurationForJiraApi(timeSpentHours),
+    comment,
+    started: formatDateForJiraApi(started),
+  };
+
+  // Make the POST request
+  axios
+    .post(url, data, config)
+    .then((response) => {
+      // Handle success
+      console.log("Post request successful:", response.data);
+    })
+    .catch((error) => {
+      // Handle error
+      console.error("Error making post request:", error);
+      console.error(error);
+    });
+}
+
+function formatDateForJiraApi(date) {
+  const isoString = date.toISOString();
+
+  const datePart = isoString.slice(0, 10);
+  const timePart = isoString.slice(11, 23);
+
+  const formattedDate = `${datePart}T${timePart}+0000`;
+
+  return formattedDate;
+}
+
+function formatDurationForJiraApi(hours) {
+  return `${hours}h`;
+}
+
+function getTodayAt(hours) {
+  const today = new Date();
+  today.setHours(hours, 0, 0, 0);
+
+  return today;
+}
+
+module.exports.postWorklog = postWorklog;
+module.exports.getTodayAt = getTodayAt;
