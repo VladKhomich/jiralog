@@ -1,4 +1,6 @@
 const readline = require("readline");
+const readlineSync = require("readline-sync");
+const { Writable } = require("stream");
 
 function askForParameter(question) {
   const rl = readline.createInterface({
@@ -11,6 +13,12 @@ function askForParameter(question) {
       rl.close();
       resolve(answer);
     });
+  });
+}
+
+function askForSecret(question) {
+  return readlineSync.question(question, {
+    hideEchoBack: true,
   });
 }
 
@@ -43,5 +51,6 @@ function askForConfirmation(question) {
 }
 
 module.exports.askForParameter = askForParameter;
+module.exports.askForSecret = askForSecret;
 module.exports.askForParameterWithDefault = askForParameterWithDefault;
 module.exports.askForConfirmation = askForConfirmation;

@@ -13,19 +13,25 @@ const { jCommand } = require("./commands/jCommand");
 const { template } = require("./commands/template");
 
 program.command("config").description("Configures tool").action(config);
-program.command("today").description("Lists all today's logs").action(today);
+program
+  .command("today")
+  .alias("t")
+  .description("Lists all today's logs")
+  .action(today);
 program
   .command("yesterday")
+  .alias("y")
   .description("Lists all yesterday's logs")
   .action(yesterday);
 program
   .command("log <hours> <activity>")
   .description("Logs activity")
+  .alias("l")
   .action(log);
 
 program.command("drop").description("Drops todays log").action(drop);
 program.command("remove").description("Removes log item").action(remove);
-program.command("edit").description("Edits log item").action(edit);
+program.command("edit").alias("e").description("Edits log item").action(edit);
 program.command("post").description("Posts log to jira server").action(post);
 
 program.command("template").description("Creates a template").action(template);

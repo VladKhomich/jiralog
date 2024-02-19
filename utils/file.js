@@ -27,21 +27,44 @@ function remove(file) {
 function todayFile() {
   const today = new Date().toISOString().slice(0, 10);
   const fileName = `${today.replace(/-/g, "_")}.jira`;
-  return path.join(os.homedir(), fileName);
+  return path.join(getDirectory(), fileName);
 }
 
 function yesterdayFile() {
-  const yday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const toDayOfTheWeek = new Date(Date.now()).getDay();
+  const dayOffset = 24 * 3600 * 1000;
+  var offset = 0;
+
+  switch (toDayOfTheWeek) {
+    case 1:
+      offset = 3 * dayOffset;
+      break;
+    case 0:
+      offset = 2 * dayOffset;
+      break;
+    default:
+      dayOffset;
+  }
+
+  const yday = new Date(Date.now() - offset).toISOString().slice(0, 10);
   const fileName = `${yday.replace(/-/g, "_")}.jira`;
-  return path.join(os.homedir(), fileName);
+  return path.join(getDirectory(), fileName);
 }
 
 function configFile() {
-  return path.join(os.homedir(), "config.jira");
+  return path.join(getDirectory(), "config.jira");
 }
 
 function templatesFile() {
-  return path.join(os.homedir(), "templates.jira");
+  return path.join(getDirectory(), "templates.jira");
+}
+
+function getDirectory() {
+  const d = `${os.homedir()}/jiracli`;
+  if (!fs.existsSync(d)) {
+    fs.mkdirSync(d);
+  }
+  return d;
 }
 
 module.exports.exists = exists;

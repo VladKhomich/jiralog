@@ -3,7 +3,9 @@ const {
   askForParameter,
   askForConfirmation,
   askForParameterWithDefault,
+  askForSecret,
 } = require("../utils/askFor");
+const { getConfig } = require("../utils/configBuilder");
 
 const file = configFile();
 
@@ -24,25 +26,29 @@ async function config() {
       return;
     }
 
-    config.baseUrl = await askForParameterWithDefault(
+    const baseUrl = await askForParameterWithDefault(
       "What is base jira server url?",
       config.baseUrl
     );
-    config.key = await askForParameterWithDefault(
-      "What is your key?",
-      config.key
-    );
-    config.taskId = await askForParameterWithDefault(
+
+    const taskId = await askForParameterWithDefault(
       "What is task id?",
       config.taskId
     );
-    write(file, config);
+
+    const userName = await askForParameter("What is your username?");
+    const password = askForSecret("What is your password?");
+
+    const newConfig = getConfig(baseUrl, taskId, userName, password);
+
+    write(file, newConfig);
   } else {
     var baseUrl = await askForParameter("What is base jira server url?");
-    var key = await askForParameter("What is your key?");
     var taskId = await askForParameter("What is task id?");
+    const userName = await askForParameter("What is your username?");
+    var password = askForSecret("What is your password?");
 
-    write(file, { baseUrl, key, taskId });
+    write(file, getConfig(baseUrl, taskId, userName, password));
   }
 }
 
