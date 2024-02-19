@@ -25,14 +25,27 @@ function postWorklog(url, token, comment, timeSpentHours, started) {
   axios
     .post(url, data, config)
     .then((response) => {
-      // Handle success
-      console.log("Post request successful:", response.data);
+      console.log("Post request successful");
     })
     .catch((error) => {
-      // Handle error
-      console.error("Error making post request:", error);
-      console.error(error);
+      if (error.code === "ENOTFOUND") {
+        logError("Check the base URL in config");
+        return;
+      }
+      if (error.response.status === 401) {
+        logError("Check your credentials");
+        return;
+      }
+      if (error.response.status === 404) {
+        logError("Check the base URL in config ot your task id");
+        return;
+      }
+      logError("Unexpected error, please contact to dev team");
     });
+}
+
+function logError(advice) {
+  console.log(`Failed to post daily log. ${advice}`);
 }
 
 function formatDateForJiraApi(date) {
