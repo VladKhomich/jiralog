@@ -1,5 +1,5 @@
 {
-  "name": "jiracli",
+  "name": "jiralog",
   "version": "0.1.0",
   "description": "CLI tool for posting work log to Jira server",
   "main": "index.js",

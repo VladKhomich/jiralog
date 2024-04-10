@@ -1,4 +1,4 @@
-# jiracli
+# jiralog
 The present package is a CLI tool that can be used to post work logs to jira server.
 ## Use case
 In many outsource companies there is a regular practice of posting work logs in a single jira ticket on daily-basis in order to keep track of employee's work and generate required reports.
@@ -6,7 +6,7 @@ In many outsource companies there is a regular practice of posting work logs in 
 This tool can be used to avoid routine when developer have to remember every single activity in the evening and compose the work log having opened jira website in browser. 
 ## Installation
 ```
-npm i jiracli -g
+npm i jiralog -g
 jira config
 ```
 ## Example of usage
