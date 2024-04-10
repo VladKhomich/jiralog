@@ -11,7 +11,7 @@ function yesterday() {
     const data = read(file);
     writeDay(data);
   } else {
-    console.log("No logged work yesterday");
+    console.log("no logged work yesterday");
   }
 }
 

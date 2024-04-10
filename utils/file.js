@@ -43,7 +43,7 @@ function yesterdayFile() {
       offset = 2 * dayOffset;
       break;
     default:
-      dayOffset;
+      offset = dayOffset;
   }
 
   const yday = new Date(Date.now() - offset).toISOString().slice(0, 10);
