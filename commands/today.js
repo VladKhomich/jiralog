@@ -8,7 +8,7 @@ function today() {
     const data = read(file);
     writeDay(data);
   } else {
-    console.log("No logged work today");
+    console.log("no logged work today");
   }
 }
 

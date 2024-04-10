@@ -40,7 +40,7 @@ async function post() {
   console.log(text);
 
   const confirmPosting = await askForConfirmation(
-    "ARE YOU SURE YOU WANNA POST THIS TO JIRA SERVER?"
+    'are you sure you want to post this to jira server?'
   );
   if (confirmPosting) {
     const baseUrl = `${config.baseUrl}/rest/api/2/issue`;

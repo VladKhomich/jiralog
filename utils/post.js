@@ -28,7 +28,7 @@ function postWorklog(url, token, comment, timeSpentHours, started) {
       console.log("Post request successful");
     })
     .catch((error) => {
-      if (error.code === "ENOTFOUND") {
+      if (error.code === "NOTFOUND") {
         logError("Check the base URL in config");
         return;
       }
@@ -45,7 +45,7 @@ function postWorklog(url, token, comment, timeSpentHours, started) {
 }
 
 function logError(advice) {
-  console.log(`Failed to post daily log. ${advice}`);
+  console.log(`failed to post daily log. ${advice}`);
 }
 
 function formatDateForJiraApi(date) {

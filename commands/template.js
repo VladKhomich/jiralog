@@ -56,7 +56,7 @@ const removeTemplate = (templates, file) =>{
       },
       async (elementToRemove) => {
         const confirmation = await askForConfirmation(
-            `Are you sure you want to remove template ${elementToRemove.value}?`
+            `are you sure you want to remove template ${elementToRemove.value}?`
         );
         if (!confirmation) {
           return;
@@ -79,7 +79,7 @@ const editTemplate = (templates, file) =>{
       },
       async (itemToEdit) => {
         const confirmation = await askForConfirmation(
-            `Are you sure you want to edit template ${itemToEdit.value}?`
+            `are you sure you want to edit template ${itemToEdit.value}?`
         );
         if (!confirmation) {
           return;
@@ -120,7 +120,7 @@ const editTemplate = (templates, file) =>{
 
 const resetTemplates =async (templates, file) => {
   const confirmation = await askForConfirmation(
-      `Are you sure you want to reset template to default ones? All custom created templates will be removed`
+      `are you sure you want to reset template to default ones? All custom created templates will be removed`
   );
   if (!confirmation) {
     return;

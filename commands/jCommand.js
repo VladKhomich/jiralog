@@ -13,7 +13,7 @@ async function jCommand(alias, overrideDuration) {
       templates = read(templatesFile());
     } else {
       console.log(
-        "no templates saved. run [template] first to create a template"
+        "no templates saved. run [template] first to create a template. Or run [template -d] to create default templates."
       );
       return;
     }
