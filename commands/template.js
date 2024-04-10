@@ -125,29 +125,30 @@ const resetTemplates =async (templates, file) => {
   if (!confirmation) {
     return;
   }
-  
+
   const defaultTemplates = [
     {
       "duration": "0.5",
-      "text": "took part in daily stand-up call. Provided details about current status of assigned tasks, highlighted risks and blockers. Reported plans for the present day.",
+      "text": "Participated in daily stand-up call. Provided updates on assigned tasks, discussed risks, and mentioned any blockers. Outlined plans for the day.",
       "alias": "daily"
     },
     {
       "duration": "1",
-      "text": "Attended sprint planning call. Took part in tasks estimation and assigning process.",
+      "text": "Attended sprint planning meeting. Contributed to task estimation and assignment.",
       "alias": "planning"
     },
     {
       "duration": "1",
-      "text": "Attended product backlog refinement call. Took part in upcoming topics discussion, was involved in business logic brainstorming",
+      "text": "Joined product backlog refinement session. Engaged in discussions on upcoming topics and brainstormed business logic.",
       "alias": "pbr"
     },
     {
       "duration": "1",
-      "text": "Took part in technical refinement call. Along with the team was involved in tasks decomposition and exploring potential technical difficulties and solutions.",
+      "text": "Participated in technical refinement meeting. Collaborated with the team on task breakdowns and explored potential technical challenges and solutions.",
       "alias": "tr"
     },
-  ]
+  ];
+
 
   write(
       file,
