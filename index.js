@@ -37,6 +37,7 @@ program.command("post").description("Posts log to jira server").action(post);
 program
     .command("template")
     .description('Manages templates')
+    .option('-l', 'lists available templates')
     .option('-r', 'removes selected template')
     .option('-e', 'edits selected template')
     .option('-d', 'resets to default templates')

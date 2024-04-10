@@ -2,7 +2,7 @@ const { askForConfirmation, askForParameter, askForParameterWithDefault} = requi
 const { templatesFile, exists, read, write } = require("../utils/file");
 const cliSelect = require("cli-select");
 
-async function template(remove) {
+async function template(options) {
   const file = templatesFile();
 
   let templates = [];
@@ -10,18 +10,23 @@ async function template(remove) {
     templates = read(file);
   }
 
-  if(remove.r){
+  if(options.r){
     removeTemplate(templates, file);    
     return;
   }
 
-  if(remove.d){
+  if(options.d){
     await resetTemplates(templates, file);
     return;
   }
 
-  if(remove.e){
+  if(options.e){
     await editTemplate(templates, file);
+    return;
+  }
+
+  if(options.l){
+    await listTemplates(templates);
     return;
   }
 
@@ -116,6 +121,10 @@ const editTemplate = (templates, file) =>{
         );
       }
   );
+}
+
+const listTemplates = (templates) =>{
+  templates.forEach(t => console.log(`${t.alias} - ${t.duration} - ${t.text}`));
 }
 
 const resetTemplates =async (templates, file) => {
