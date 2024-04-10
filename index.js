@@ -34,7 +34,13 @@ program.command("remove").description("Removes log item").action(remove);
 program.command("edit").alias("e").description("Edits log item").action(edit);
 program.command("post").description("Posts log to jira server").action(post);
 
-program.command("template").description("Creates a template").action(template);
+program
+    .command("template")
+    .description('Manages templates')
+    .option('-r', 'removes selected template')
+    .option('-e', 'edits selected template')
+    .option('-d', 'resets to default templates')
+    .action(template);
 
 program
   .command("j")

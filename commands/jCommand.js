@@ -56,7 +56,7 @@ async function logActivityFromTemplate(alias, overrideDuration) {
   }
 
   if (overrideDuration) {
-    var duration = await askForParameterWithDefault(
+    const duration = await askForParameterWithDefault(
       "duration?",
       template.duration
     );
