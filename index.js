@@ -32,7 +32,11 @@ program
 program.command("drop").description("Drops todays log").action(drop);
 program.command("remove").description("Removes log item").action(remove);
 program.command("edit").alias("e").description("Edits log item").action(edit);
-program.command("post").description("Posts log to jira server").action(post);
+program.command("post")
+    .description("Posts log to jira server")
+    .option('-y', 'yesterday')
+    .option('-o, --offset <int>', 'offset in past (in days)')
+    .action(post);
 
 program
     .command("template")

@@ -109,6 +109,15 @@ Posts all records for today to provided jira server.
 
 `jira post`
 
+#### -y
+Posts work log for yesterday
+`jira post -y`
+
+#### --offset < int >
+Posts work log to the server with a specified offset in days
+
+`jira post --offset 2` (Will post the current work log for the day before yesterday)
+
 ## MIT License
 
 Copyright 2024 Uladzislau Khomich vladislav.builder@gmail.com

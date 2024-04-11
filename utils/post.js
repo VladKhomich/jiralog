@@ -70,5 +70,14 @@ function getTodayAt(hours) {
   return today;
 }
 
+function getDayAt(hours, daysOffset) {
+  const offset = daysOffset * 24 * 3600 * 1000;
+  const day = new Date(Date.now() - offset)
+  day.setHours(hours, 0, 0, 0);
+
+  return day;
+}
+
 module.exports.postWorklog = postWorklog;
 module.exports.getTodayAt = getTodayAt;
+module.exports.getDayAt = getDayAt;
