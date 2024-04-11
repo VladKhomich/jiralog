@@ -1,6 +1,7 @@
 const { askForParameterWithDefault } = require("../utils/askFor");
 const { read, todayFile, write } = require("../utils/file");
 const cliSelect = require("cli-select");
+const { writeDaySummary } = require("../utils/loggers");
 
 const logFile = todayFile();
 
@@ -21,6 +22,7 @@ function edit() {
         elementToEdit.activity
       );
       write(logFile, data);
+      writeDaySummary(data);
     }
   );
 }
