@@ -60,51 +60,61 @@ In this case:
 - base url is `https://jira.super.company.com`
 - task id is `TASK11`
 
-## drop
+### drop
 Drops today's log
 
 `jira drop`
 
-## remove
+### remove
 Removes selected work log record
 
 `jira remove`
 
-## edit [e]
+### edit [e]
 Launches wizard record modification
 
 `jira edit`
 
-## template
+### template
 Allows to manipulate templates
 
-### [no flag]
+#### [no flag]
 
 Launches template creation process
 
 `jira template`
-### -l
+#### -l
 
 Lists all available templates
 
 `jira template -l`
-### -d
+#### -d
 
 Resets existing template to default ones. All previously created templates will be removed
 
 `jira template -d`
-### -r
+#### -r
 
 Removes selected template
 
 `jira template -r`
 
-### -e
+#### -e
 Updates selected template
 
 `jira template -e`
 
-## post
+### post
 Posts all records for today to provided jira server.
 
 `jira post`
+
+## MIT License
+
+Copyright 2024 Uladzislau Khomich vladislav.builder@gmail.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
