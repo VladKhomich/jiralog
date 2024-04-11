@@ -1,6 +1,7 @@
 const { askForConfirmation } = require("../utils/askFor");
 const { exists, configFile, read, todayFile } = require("../utils/file");
 const { postWorklog, getDayAt } = require("../utils/post");
+const { countTotalHours } = require("../utils/workLog");
 
 const logFile = todayFile();
 
@@ -76,9 +77,5 @@ const startPost = async (config, text, totalHoursToday, daysOffset) => {
     postWorklog(url, key, text, totalHoursToday, getDayAt(9, daysOffset));
   }
 }
-
-const countTotalHours = (worklog) => {
-  return worklog.map((w) => w.hours).reduce((a, b) => +a + +b, 0);
-};
 
 module.exports.post = post;
