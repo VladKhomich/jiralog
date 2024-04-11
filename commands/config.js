@@ -10,16 +10,15 @@ const { getConfig } = require("../utils/configBuilder");
 const file = configFile();
 
 async function config() {
-  var configExists = exists(file);
+  const configExists = exists(file);
 
   if (configExists) {
-    var config = read(file);
+    const config = read(file);
 
     console.log(`base url: ${config.baseUrl}`);
-    console.log(`key: ${config.key}`);
     console.log(`task id: ${config.taskId}`);
 
-    var override = await askForConfirmation(
+    const override = await askForConfirmation(
       "do you want to override the configuration?"
     );
     if (!override) {

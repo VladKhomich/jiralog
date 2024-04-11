@@ -17,7 +17,7 @@ function askForParameter(question) {
 }
 
 function askForSecret(question) {
-  return readlineSync.question(question, {
+  return readlineSync.question(`${question} : `, {
     hideEchoBack: true,
   });
 }
