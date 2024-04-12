@@ -1,5 +1,9 @@
 # jiralog
 The present package is a CLI tool that can be used to post work logs to jira server.
+
+![NPM Downloads](https://img.shields.io/npm/d18m/jiralog?style=for-the-badge&logo=npm&color=970000)
+![NPM Version](https://img.shields.io/npm/v/jiralog?style=for-the-badge&logo=npm&color=970000)
+
 ## Use case
 In many outsource companies there is a regular practice of posting work logs in a single jira ticket on daily-basis in order to keep track of employee's work and generate required reports.
 
