@@ -1,6 +1,6 @@
 const { askForConfirmation } = require("../utils/askFor");
 const { exists, configFile, read, todayFile } = require("../utils/file");
-const { postWorklog, getDayAt } = require("../utils/post");
+const { postWorklog, getDayAt, getTodayAt, getConfirmationMessage, getTargetDate} = require("../utils/post");
 const { countTotalHours } = require("../utils/workLog");
 
 const logFile = todayFile();
@@ -41,40 +41,37 @@ async function post(options) {
   console.log(text);
 
   let daysOffset = 0;
+  let targetDate = getTodayAt(9);
   
   if(options.y){
     daysOffset = 1;
+    targetDate = getDayAt(9, 1);
   }
   
   if(options.offset){
     daysOffset = parseInt(options.offset);
+    targetDate = getDayAt(9, daysOffset);
   }
   
-  await startPost(config, text, totalHoursToday, daysOffset);
+  if(options.date){
+    daysOffset = undefined;
+    targetDate = getTargetDate(options.date);
+  }
+
+  const confirmMessage = getConfirmationMessage(daysOffset, targetDate);
+  
+  await startPost(config, text, totalHoursToday, targetDate, confirmMessage);
   
 }
 
-const startPost = async (config, text, totalHoursToday, daysOffset) => {
-  let confirmMessage;
-  
-  switch (daysOffset){
-    case 0: 
-      confirmMessage = 'are you sure you want to post this to jira server for today?';
-      break;
-    case 1:
-      confirmMessage = 'are you sure you want to post this to jira server for yesterday?';
-      break;
-    default:
-      confirmMessage = `are you sure you want to post this to jira server for ${daysOffset} back?`;      
-  }
-
+const startPost = async (config, text, totalHoursToday, date, confirmMessage) => {
   const confirmPosting = await askForConfirmation(confirmMessage);
   if (confirmPosting) {
     const baseUrl = `${config.baseUrl}/rest/api/2/issue`;
     const taskId = config.taskId;
     const url = `${baseUrl}/${taskId}/worklog`;
     const key = config.key;
-    postWorklog(url, key, text, totalHoursToday, getDayAt(9, daysOffset));
+    postWorklog(url, key, text, totalHoursToday, date);
   }
 }
 

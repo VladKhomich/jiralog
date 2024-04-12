@@ -35,6 +35,7 @@ program.command("edit").alias("e").description("Edits log item").action(edit);
 program.command("post")
     .description("Posts log to jira server")
     .option('-y', 'yesterday')
+    .option('-d, --date <year>-<month>-<day>/<month>-<day>/<day>', 'offset in past (in days)')
     .option('-o, --offset <int>', 'offset in past (in days)')
     .action(post);
 

@@ -78,6 +78,55 @@ function getDayAt(hours, daysOffset) {
   return day;
 }
 
+function getConfirmationMessage (daysOffset, concreteDate) {
+  const question = 'are you sure you want to post this to jira server for {!0!}?'
+  const compose = (option) =>{
+    return question.replace("{!0!}", option);
+  }
+
+  if(concreteDate && daysOffset === undefined){
+    return compose(concreteDate.toISOString().slice(0, 10));
+  }
+
+  let confirmMessage;
+
+  switch (daysOffset){
+    case 0:
+      confirmMessage = compose('today')
+      break;
+    case 1:
+      confirmMessage = compose('yesterday')
+      break;
+    default:
+      confirmMessage = compose(`${daysOffset} days back`);
+  }
+
+  return confirmMessage;
+}
+
+function getTargetDate(input){
+  const members = input.split('-');
+
+  const date = new Date();
+
+  if(members.length === 1){
+    date.setDate(members[0])
+  }
+
+  if(members.length === 2){
+    date.setMonth(members[0]-1)
+    date.setDate(members[1])
+  }
+
+  if(members.length === 3){
+    date.setFullYear(members[0], members[1] - 1, members[2])
+  }
+
+  return date;
+}
+
 module.exports.postWorklog = postWorklog;
 module.exports.getTodayAt = getTodayAt;
 module.exports.getDayAt = getDayAt;
+module.exports.getConfirmationMessage = getConfirmationMessage;
+module.exports.getTargetDate = getTargetDate;

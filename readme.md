@@ -117,7 +117,26 @@ Posts all records for today to provided jira server.
 Posts work log for yesterday
 `jira post -y`
 
-#### --offset < int >
+#### -d < date > / --date < date >
+Posts work log for the concrete date. 
+> Different input types are possible
+> - only day of the month
+> - month + day
+> - year + month + day
+
+Date is expected in one of following formats:
+
+- `day`
+- `month-day`
+- `year-month-day`
+
+`jira post -d 10` (With post work log to the 10th day of the current month and year)
+
+`jira post -d 5-2` (With post work log to the second of May of the current year)
+
+`jira post -d 2020-5-2` (With post work log to the second of May 2020)
+
+#### -o < int > / --offset < int >
 Posts work log to the server with a specified offset in days
 
 `jira post --offset 2` (Will post the current work log for the day before yesterday)
