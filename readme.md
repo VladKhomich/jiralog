@@ -121,8 +121,14 @@ Posts work log for yesterday
 Posts work log for the concrete date. 
 > Different input types are possible
 > - only day of the month
-> - day + month
-> - day + month + year
+> - month + day
+> - year + month + day
+
+Date is expected in one of following formats:
+
+- `day`
+- `month-day`
+- `year-month-day`
 
 `jira post -d 10` (With post work log to the 10th day of the current month and year)
 
