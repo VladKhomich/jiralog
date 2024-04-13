@@ -5,6 +5,7 @@ const {
 const { exists, templatesFile, read } = require("../utils/file");
 const log = require("./log");
 const cliSelect = require("cli-select");
+const { git } = require("./git");
 
 async function jCommand(alias, overrideDuration) {
   if (!alias) {
@@ -20,9 +21,13 @@ async function jCommand(alias, overrideDuration) {
     console.log("select a template to log activity");
     cliSelect(
       {
-        values: templates.map((c) => c.alias),
+        values: ['select from git contributions', ...templates.map((c) => c.alias)],
       },
       (selectedItem) => {
+        if(selectedItem.value === 'select from git contributions'){
+          git();
+          return;
+        }
         logActivityFromTemplate(selectedItem.value, true);
       }
     );
