@@ -19,7 +19,8 @@ jira j daily
 jira j planning
 jira log 0.5 "Had a call with PM and LD in order to allign solution for bug #3201-1"
 jira log 4 "Worked on resolution of #3201-1"
-jira log 1.5 "Assisted Bob with refactiong of Notification package"
+jira git
+jira log 0.5 "Assisted Bob with refactiong of Notification package"
 jira log 0.5 "Conducted peer-review for Kate #3198-4"
 jira post
 ```
@@ -53,6 +54,11 @@ This is a "J Command". It is planned as a multifunctional command but currently 
 `jira j daily` - this will launch work log wizard based on "daily" template)
 
 `jira j` - this will allow selection of template to be used for work log creation
+
+> Using git activity
+> 
+> In the selection of options there is a special one that which will launch [git command](#git). With this user is able to create a work log not based on template but based on recent git activity in repositories.
+
 ### config
 Launches configuration wizard:
 
@@ -78,6 +84,46 @@ Removes selected work log record
 Launches wizard record modification
 
 `jira edit`
+
+### git
+Allows to create a work log record based on git activity.
+
+> Requires additional configuration
+> 
+> In case if application was used before this feature was introduced, user needs to go through `jira config` again to provide requred information 
+
+The main idea of this command is to check commits in provided repositories directory for the specified date and create a work log record based on this activity. To achieve the most precised user experience, it's required to follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+The commits searching process is based on several options provided by the user:
+- git user email (commits are filtered by provided email during the `jira config` execution)
+- available repositories list (user can provide repositories directory during `jira config` execution. To check if all desired repositories are included in the searching process use `jira git --repos`)
+- date (several date format are possible, more details are available in [providing date as a parameter section](#input-date-as-a-parameter))
+
+
+#### [no flag]
+`jira git` (Will start wizard of work log creation based on git activity for today)
+
+#### -d < date > / --date < date >
+`jira git -d 2024-04-25` (Will check git activity for the 25th of April 2024 and create a work log record based on user selection)
+
+`jira git -d 04-25` (Will check git activity for the 25th of April current year and create a work log record based on user selection)
+
+`jira git -d 25` (Will check git activity for the 25th day of the current month and create a work log record based on user selection)
+
+If date is not provided explicitly the current day will be used
+
+> Possible pitfalls
+> 
+> In case if activity is expected to be displayed but was not, it's a good idea to check if `git user email` and `git repositories directory` are specified properly. To do this use `jira config` and `jira git --repos`. 
+>
+> Additionally you may need to check if date is provided in the [valid format](#input-date-as-a-parameter) 
+>
+> In case if task number is not fetched from the commit message it may be due to commit message format. Make sure that you follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) approach. 
+
+#### -r / --repos
+
+`jira git --repos` (Will list all repositories that are visited during git activity searching process. Allow to check if directory was configured properly during `jira config` execution)
+
 
 ### template
 Allows to manipulate templates
@@ -119,16 +165,8 @@ Posts work log for yesterday
 
 #### -d < date > / --date < date >
 Posts work log for the concrete date. 
-> Different input types are possible
-> - only day of the month
-> - month + day
-> - year + month + day
 
-Date is expected in one of following formats:
-
-- `day`
-- `month-day`
-- `year-month-day`
+More details are available in [providing date as a parameter section](#input-date-as-a-parameter)
 
 `jira post -d 10` (With post work log to the 10th day of the current month and year)
 
@@ -140,6 +178,19 @@ Date is expected in one of following formats:
 Posts work log to the server with a specified offset in days
 
 `jira post --offset 2` (Will post the current work log for the day before yesterday)
+
+## Input date as a parameter
+
+> Different input types are possible
+> - only day of the month
+> - month + day
+> - year + month + day
+
+Date is expected in one of following formats:
+
+- `day`
+- `month-day`
+- `year-month-day`
 
 ## MIT License
 

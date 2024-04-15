@@ -19,7 +19,7 @@ function git(options = {}) {
     
     let date = new Date().toISOString().split('T')[0];
     if(options.date){
-        date = getTargetDate(options.date)
+        date = getTargetDate(options.date).toISOString().split('T')[0];
     }
 
     const repoDir = config.gitReposDir;
@@ -60,7 +60,7 @@ function getLabelForContribution(contribution){
 
 function getRecord(contribution){
     if(contribution.tickets){
-        return `worked with task #${contribution.tickets[0]} in ${contribution.repo} repository.`;
+        return `Worked on task #${contribution.tickets[0]} in ${contribution.repo} repository.`;
     }
     return `worked with ${contribution.repo} repository.`;
 }
