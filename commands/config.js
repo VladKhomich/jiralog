@@ -6,6 +6,7 @@ const {
   askForSecret,
 } = require("../utils/askFor");
 const { getConfig } = require("../utils/configBuilder");
+const { getGlobalGitUserEmail } = require("../utils/git");
 
 const file = configFile();
 
@@ -17,6 +18,8 @@ async function config() {
 
     console.log(`base url: ${config.baseUrl}`);
     console.log(`task id: ${config.taskId}`);
+    console.log(`git user email: ${config.gitUserEmail}`);
+    console.log(`repositories folder (use 'jira git --repos' to list all of repositories): ${config.gitReposDir}`);
 
     const override = await askForConfirmation(
       "do you want to override the configuration?"
@@ -35,19 +38,37 @@ async function config() {
       config.taskId
     );
 
-    const userName = await askForParameter("what is your username?");
-    const password = askForSecret("what is your password?");
+    const userName = await askForParameter("what is your JIRA username?");
+    const password = askForSecret("what is your JIRA password?");
+    
+    const gitUserEmail = await askForParameterWithDefault(
+        "what is your git user email?",
+        config.gitUserEmail?? getGlobalGitUserEmail(),
+    )
 
-    const newConfig = getConfig(baseUrl, taskId, userName, password);
+    const gitReposDir = await askForParameterWithDefault(
+        "what is your git repositories directory (use 'jira git --repos' to list them)?",
+        config.gitReposDir
+    )
+
+    const newConfig = getConfig(baseUrl, taskId, userName, password, gitUserEmail, gitReposDir);
 
     write(file, newConfig);
   } else {
     const baseUrl = await askForParameter("what is base jira server url? (make sure to include full address e.g. https://jira.your.company.com");
     const taskId = await askForParameter("what is task id?");
-    const userName = await askForParameter("what is your username?");
-    const password = askForSecret("what is your password?");
+    const userName = await askForParameter("what is your JIRA username?");
+    const password = askForSecret("what is your JIRA password?");
+    const gitUserEmail = await askForParameterWithDefault(
+        "what is your git user email?",
+        getGlobalGitUserEmail(),
+    );
 
-    write(file, getConfig(baseUrl, taskId, userName, password));
+    const gitReposDir = await askForParameter(
+        "what is your git repositories directory (use 'jira git --repos' to list them)?"
+    )
+
+    write(file, getConfig(baseUrl, taskId, userName, password, gitUserEmail, gitReposDir));
   }
 }
 

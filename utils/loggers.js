@@ -14,5 +14,12 @@ function writeDaySummary(workLog){
   
 }
 
-module.exports.writeDay = writeDay;
-module.exports.writeDaySummary = writeDaySummary;
+function writeConfigIsMissing(){
+  console.log('configuration is missing. Use `jira config` first.')
+}
+
+module.exports ={
+  writeDay,
+  writeDaySummary,
+  writeConfigIsMissing,
+} 

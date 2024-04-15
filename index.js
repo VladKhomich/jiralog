@@ -11,6 +11,7 @@ const { post } = require("./commands/post");
 const { yesterday } = require("./commands/yesterday");
 const { jCommand } = require("./commands/jCommand");
 const { template } = require("./commands/template");
+const { git } = require("./commands/git");
 
 program.command("config").description("Configures tool").action(config);
 program
@@ -54,5 +55,10 @@ program
   .option("-d")
   .description("J command")
   .action(jCommand);
+
+program.command("git")
+    .option('-r, --repos', 'lists all tracked repositories')
+    .option('-d, --date <date>', 'date to get contributions')
+    .action(git)
 
 program.parse();
