@@ -29,10 +29,11 @@ function askForParameterWithDefault(question, defaultAnswer) {
   });
 
   return new Promise((resolve) => {
-    rl.question(`${question} : (${defaultAnswer}) `, (answer) => {
+    rl.question(`${question} : `, (answer) => {
       rl.close();
       resolve(answer ? answer : defaultAnswer);
     });
+    rl.write(defaultAnswer);
   });
 }
 
