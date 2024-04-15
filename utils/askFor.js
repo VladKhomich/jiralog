@@ -29,10 +29,11 @@ function askForParameterWithDefault(question, defaultAnswer) {
   });
 
   return new Promise((resolve) => {
-    rl.question(`${question} : (${defaultAnswer}) `, (answer) => {
+    rl.question(`${question} : `, (answer) => {
       rl.close();
       resolve(answer ? answer : defaultAnswer);
     });
+    rl.write(defaultAnswer);
   });
 }
 
@@ -43,9 +44,10 @@ function askForConfirmation(question) {
   });
 
   return new Promise((resolve) => {
-    rl.question(`${question} yes/no : `, (answer) => {
-      rl.close();
-      resolve(answer.toLowerCase() === "yes");
+    rl.question(`${question} y/n : `, (answer) => {
+      rl.close();      
+      answer = answer.toLowerCase();
+      resolve(answer === 'yes' || answer === 'y');
     });
   });
 }
