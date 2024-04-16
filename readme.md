@@ -179,6 +179,35 @@ Posts work log to the server with a specified offset in days
 
 `jira post --offset 2` (Will post the current work log for the day before yesterday)
 
+### format
+Allows user to define which formats are used to create work log records.
+
+#### [no flag]
+Lists available formats
+
+#### -c / --check
+Provides information about defined formats.
+
+`jira format -c`
+
+#### -d / --default
+Resets created formats to default ones
+
+`jira format -d`
+
+#### -e / --edit
+Allows user edit created formats.
+
+`jira format -d`
+
+> How formats must be defined
+> 
+> `jira format -d` will start wizard of formats editing. User should provide values for formats in the way, described in command hints.
+> 
+> For example, if format for work log record is being entered, you need to provide a text with some placeholders that later will be replaced with real values. In this case you need provide WORKLOG_DURATION where you want to get duration of activity and WORKLOG_DESCRIPTION where description is required to be inserted.
+
+In order to check entered scenarios use `jira format --check`. In case it's required to reset formats to default use `jira format --default`.
+
 ## Input date as a parameter
 
 > Different input types are possible
