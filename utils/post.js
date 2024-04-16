@@ -37,7 +37,7 @@ function postWorklog(url, token, comment, timeSpentHours, started) {
         return;
       }
       if (error.response.status === 404) {
-        logError("Check the base URL in config ot your task id");
+        logError("Check the base URL in config or your task id");
         return;
       }
       logError("Unexpected error, please contact to dev team");
