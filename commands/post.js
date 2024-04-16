@@ -1,7 +1,8 @@
-const { askForConfirmation } = require("../utils/askFor");
+const { askForConfirmation, askForSecret} = require("../utils/askFor");
 const { exists, configFile, read, todayFile } = require("../utils/file");
 const { postWorklog, getDayAt, getTodayAt, getConfirmationMessage, getTargetDate} = require("../utils/post");
 const { countTotalHours } = require("../utils/workLog");
+const { getKey, decryptKey } = require("../utils/configBuilder");
 
 const logFile = todayFile();
 
@@ -70,7 +71,13 @@ const startPost = async (config, text, totalHoursToday, date, confirmMessage) =>
     const baseUrl = `${config.baseUrl}/rest/api/2/issue`;
     const taskId = config.taskId;
     const url = `${baseUrl}/${taskId}/worklog`;
-    const key = config.key;
+    
+    let key = decryptKey(config.key);
+    
+    if(!key){
+      const password = await askForSecret('enter your password (It will NOT be saved anywhere by jiralog)')
+      key = getKey(config.login, password);
+    }
     postWorklog(url, key, text, totalHoursToday, date);
   }
 }

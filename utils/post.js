@@ -33,7 +33,7 @@ function postWorklog(url, token, comment, timeSpentHours, started) {
         return;
       }
       if (error.response.status === 401) {
-        logError("Check your credentials");
+        logError("Check your credentials (Either check your password provided before 'jira post' or check credentials in 'jira config')");
         return;
       }
       if (error.response.status === 404) {

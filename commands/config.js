@@ -18,6 +18,7 @@ async function config() {
 
     console.log(`base url: ${config.baseUrl}`);
     console.log(`task id: ${config.taskId}`);
+    console.log(`jira login: ${config.login}`);
     console.log(`git user email: ${config.gitUserEmail}`);
     console.log(`repositories folder (use 'jira git --repos' to list all of repositories): ${config.gitReposDir}`);
 
@@ -38,8 +39,9 @@ async function config() {
       config.taskId
     );
 
-    const userName = await askForParameter("what is your JIRA username?");
-    const password = askForSecret("what is your JIRA password?");
+    const userName = await askForParameterWithDefault("what is your JIRA username?", config.login);
+
+    const password = await getPassword();
     
     const gitUserEmail = await askForParameterWithDefault(
         "what is your git user email?",
@@ -58,7 +60,9 @@ async function config() {
     const baseUrl = await askForParameter("what is base jira server url? (make sure to include full address e.g. https://jira.your.company.com");
     const taskId = await askForParameter("what is task id?");
     const userName = await askForParameter("what is your JIRA username?");
-    const password = askForSecret("what is your JIRA password?");
+
+    const password = await getPassword();
+
     const gitUserEmail = await askForParameterWithDefault(
         "what is your git user email?",
         getGlobalGitUserEmail(),
@@ -70,6 +74,17 @@ async function config() {
 
     write(file, getConfig(baseUrl, taskId, userName, password, gitUserEmail, gitReposDir));
   }
+}
+
+async function getPassword() {
+  let password;
+  const savePassword = await askForConfirmation(`WOULD YOU LIKE JIRALOG TO SAVE YOUR PASSWORD LOCALLY? In this case you will not need to enter password on every 'jira post' command. We highly recommend you NOT store password at any system.`)
+
+  if (savePassword) {
+    password = askForSecret("what is your JIRA password?");
+  }
+
+  return password;
 }
 
 module.exports = config;
