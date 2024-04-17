@@ -1,4 +1,4 @@
-const { askForConfirmation } = require("../utils/askFor");
+const { askForConfirmation, askForSecret } = require("../utils/askFor");
 const { exists, configFile, read, todayFile } = require("../utils/file");
 const { postWorklog, getDayAt, getTodayAt, getConfirmationMessage, getTargetDate} = require("../utils/post");
 const { countTotalHours } = require("../utils/workLog");
