@@ -70,6 +70,8 @@ In this case:
 - base url is `https://jira.super.company.com`
 - task id is `TASK11`
 
+User needs to provide information for authentication. In more detail this is described in [Usage of credentials](#usage-of-credentials)
+
 ### drop
 Drops today's log
 
@@ -159,6 +161,10 @@ Posts all records for today to provided jira server.
 
 `jira post`
 
+> 🔑 Authentication
+>
+> User needs to provide information for authentication. In more detail this is described in [Usage of credentials](#usage-of-credentials)
+
 #### -y
 Posts work log for yesterday
 `jira post -y`
@@ -220,6 +226,20 @@ Date is expected in one of following formats:
 - `day`
 - `month-day`
 - `year-month-day`
+
+## Usage of credentials
+jiralog uses basic authentication to authenticate your request in the provided jira server. Basic authentication requires your username and password. There are two main approaches to handle credentials in jiralog:
+- enter password on every `jira post` command
+- save user token locally and use it
+
+> ⚠️ It's not recommended to save credentials in any application
+> 
+> The best option is to enter password on every `jira post` command execution
+
+User token can be saved locally in an encrypted way. Secret key is not a static value so you may need to re-enter your credentials from time to time.
+To save your credentials locally you need to run `jira config` command and explicitly confirm credentials saving.
+
+In case if saving of token is not acceptable, user needs to decline password saving in the scope of `jira config` command execution. In this case user will be asked for password on every execution of `jira post` command.
 
 ## MIT License
 
