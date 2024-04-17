@@ -17,6 +17,7 @@
     "cli-select": "^1.1.2",
     "commander": "^11.1.0",
     "conf": "^12.0.0",
+    "crypto-js": "^4.2.0",
     "fs": "^0.0.1-security",
     "readline-sync": "^1.4.10"
   },
