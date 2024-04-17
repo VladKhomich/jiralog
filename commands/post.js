@@ -1,7 +1,8 @@
-const { askForConfirmation, askForSecret} = require("../utils/askFor");
+const { askForConfirmation } = require("../utils/askFor");
 const { exists, configFile, read, todayFile } = require("../utils/file");
 const { postWorklog, getDayAt, getTodayAt, getConfirmationMessage, getTargetDate} = require("../utils/post");
 const { countTotalHours } = require("../utils/workLog");
+const { formatWorkLogRecord } = require("../utils/format");
 const { getKey, decryptKey } = require("../utils/configBuilder");
 
 const logFile = todayFile();

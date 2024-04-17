@@ -55,6 +55,10 @@ function configFile() {
   return path.join(getDirectory(), "config.jira");
 }
 
+function formatsFile() {
+  return path.join(getDirectory(), "formats.jira");
+}
+
 function templatesFile() {
   return path.join(getDirectory(), "templates.jira");
 }
@@ -74,4 +78,6 @@ module.exports.remove = remove;
 module.exports.todayFile = todayFile;
 module.exports.yesterdayFile = yesterdayFile;
 module.exports.configFile = configFile;
+module.exports.configFile = configFile;
+module.exports.formatsFile = formatsFile;
 module.exports.templatesFile = templatesFile;

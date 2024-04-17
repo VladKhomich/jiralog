@@ -5,6 +5,7 @@ const log = require("./log");
 const { exists, read, configFile } = require("../utils/file");
 const { writeConfigIsMissing } = require("../utils/loggers");
 const { getTargetDate } = require("../utils/post");
+const { formatGitActivityDescription } = require("../utils/format");
 
 function git(options = {}) {
     const config = getConfig();
@@ -59,10 +60,7 @@ function getLabelForContribution(contribution){
 }
 
 function getRecord(contribution){
-    if(contribution.tickets){
-        return `Worked on task #${contribution.tickets[0]} in ${contribution.repo} repository.`;
-    }
-    return `worked with ${contribution.repo} repository.`;
+    return formatGitActivityDescription(contribution);
 }
 
 function listRepos(reposDirectory){ 

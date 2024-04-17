@@ -12,6 +12,7 @@ const { yesterday } = require("./commands/yesterday");
 const { jCommand } = require("./commands/jCommand");
 const { template } = require("./commands/template");
 const { git } = require("./commands/git");
+const { format } = require("./commands/format");
 
 program.command("config").description("Configures tool").action(config);
 program
@@ -60,5 +61,12 @@ program.command("git")
     .option('-r, --repos', 'lists all tracked repositories')
     .option('-d, --date <date>', 'date to get contributions')
     .action(git)
+
+program.command('format')
+    .description('manages formats of logging')
+    .option('-c, --check', 'checks provided formats')
+    .option('-d, --default', 'resets formats to default values')
+    .option('-e, --edit', 'edits formats')
+    .action(format)
 
 program.parse();
