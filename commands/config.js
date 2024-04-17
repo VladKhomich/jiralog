@@ -78,7 +78,7 @@ async function config() {
 
 async function getPassword() {
   let password;
-  const savePassword = await askForConfirmation(`WOULD YOU LIKE JIRALOG TO SAVE YOUR PASSWORD LOCALLY? In this case you will not need to enter password on every 'jira post' command. We highly recommend you NOT store password at any system.`)
+  const savePassword = await askForConfirmation(`WOULD YOU LIKE JIRALOG TO SAVE YOUR PASSWORD LOCALLY? In this case you will not need to enter password on every 'jira post' command. It's NOT RECOMMENDED to store password at any system.`)
 
   if (savePassword) {
     password = askForSecret("what is your JIRA password?");
