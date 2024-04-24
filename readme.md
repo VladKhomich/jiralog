@@ -241,6 +241,69 @@ To save your credentials locally you need to run `jira config` command and expli
 
 In case if saving of token is not acceptable, user needs to decline password saving in the scope of `jira config` command execution. In this case user will be asked for password on every execution of `jira post` command.
 
+## Run jiralog inside a Docker container
+### Building an image
+```bash
+docker build \
+  --build-arg GIT_USER="$(cat ~/.gitconfig | grep 'name =' | awk -F'= ' '{ printf $2}')" \
+  --build-arg GIT_EMAIL="$(cat ~/.gitconfig | grep 'email =' | awk -F'= ' '{ printf $2}')" \
+  --build-arg USER_NAME="${USER}" \
+  --build-arg USER_ID=${UID} \
+  --build-arg UMASK=$(umask) \
+  --build-arg TZ=$(cat /etc/timezone) \
+  --tag jiralog --file Dockerfile .
+```
+The command extracts your environment settings automatically and makes preconfiguration of the container.
+
+You can provide values of the following arguments explicitly: GIT_USER, GIT_EMAIL, USER_NAME, USER_ID, UMASK and TZ.
+
+### Running a container and working with jiracli interactively
+```bash
+docker run -it --mount type=bind,source="$HOME/jiracli",target="/home/$USER/jiracli" jiralog
+
+# Now you are inside the container and able to make initial configuration of jiracli:
+jira config
+```
+Inside the container, the whole scope of commands are available interactively. Your jiracli settings and logs are stored in your `~/jiracli` directory that's mounted to the container.
+
+### Working directly from your bash terminal
+You can use the following bash functions to run `jira log` and `jira post` commands directly from you bash terminal session.
+
+#### jiralog bash function
+```bash
+function jiralog () {
+  local hours=${1}
+  local message=$(echo $* | sed "s%${hours} %%")
+  docker run --mount type=bind,source="${HOME}/jiracli",target="/home/${USER}/jiracli" jiralog -c "jira log ${hours} \"${message}\""
+}
+# Now to log work, run:
+jiralog 2 Working on TASK-123
+jiralog 1.5 Working on TASK-124
+```
+The first parameter is hours you spent working on the task. The rest is a message that will be posted to Jira.
+`jira log 2 "Working on TASK-123"` and `jira log 1.5 "Working on TASK-124"` are run under the hood.
+
+#### jirapost bash function
+```bash
+function jirapost () {
+  if [ -n "${1}" ]
+  then
+    postDate=${1}
+    postDateFile="~/jiracli/${postDate//-/_}.jira"
+    todayDate=$(date '+%Y_%m_%d')
+    todayFile="~/jiracli/${todayDate}.jira"
+    command="echo y | jira post -d ${postDate} && mv ${todayFile} ${postDateFile};"
+  else command="echo y | jira post"
+  fi
+  docker run --mount type=bind,source="${HOME}/jiracli",target="/home/${USER}/jiracli" jiralog -c "${command}"
+}
+# To post a worklog to Jira, run:
+jirapost
+# If a worklog should be posted for specific date, provide data to the command in format YYYY-MM-DD
+jirapost 2024-04-22
+```
+If date is specified, worklog will be posted and file will be renamed to correspond the reported date.
+
 ## MIT License
 
 Copyright 2024 Uladzislau Khomich vladislav.builder@gmail.com
