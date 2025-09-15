@@ -51,6 +51,13 @@ function yesterdayFile() {
   return path.join(getDirectory(), fileName);
 }
 
+function fileDaysAgo(days) {
+  const offset = 24 * 3600 * 1000 * days;
+  const yday = new Date(Date.now() - offset).toISOString().slice(0, 10);
+  const fileName = `${yday.replace(/-/g, "_")}.jira`;
+  return path.join(getDirectory(), fileName);
+}
+
 function configFile() {
   return path.join(getDirectory(), "config.jira");
 }
@@ -81,3 +88,4 @@ module.exports.configFile = configFile;
 module.exports.configFile = configFile;
 module.exports.formatsFile = formatsFile;
 module.exports.templatesFile = templatesFile;
+module.exports.fileDaysAgo = fileDaysAgo;
