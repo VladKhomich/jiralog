@@ -7,7 +7,9 @@ const log = require("./log");
 const cliSelect = require("cli-select");
 const { git } = require("./git");
 
-async function jCommand(alias, overrideDuration) {
+async function jCommand(alias, options = {}) {
+  const overrideDuration = options.d;
+
   if (!alias) {
     let templates = [];
     if (exists(templatesFile())) {
@@ -28,17 +30,17 @@ async function jCommand(alias, overrideDuration) {
           git();
           return;
         }
-        logActivityFromTemplate(selectedItem.value, true);
+        logActivityFromTemplate(selectedItem.value, true, options.tag);
       }
     );
 
     return;
   }
 
-  await logActivityFromTemplate(alias, overrideDuration);
+  await logActivityFromTemplate(alias, overrideDuration, options.tag);
 }
 
-async function logActivityFromTemplate(alias, overrideDuration) {
+async function logActivityFromTemplate(alias, overrideDuration, tag) {
   let templates = [];
   if (exists(templatesFile())) {
     templates = read(templatesFile());
@@ -68,7 +70,7 @@ async function logActivityFromTemplate(alias, overrideDuration) {
     template.duration = duration;
   }
 
-  log(template.duration, activity);
+  log(template.duration, activity, { tag });
 }
 
 module.exports.jCommand = jCommand;

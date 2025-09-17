@@ -1,11 +1,9 @@
 const { askForConfirmation, askForSecret } = require("../utils/askFor");
-const { exists, configFile, read, todayFile } = require("../utils/file");
+const { exists, configFile, read, todayFile, yesterdayFile, fileDaysAgo } = require("../utils/file");
 const { postWorklog, getDayAt, getTodayAt, getConfirmationMessage, getTargetDate} = require("../utils/post");
 const { countTotalHours } = require("../utils/workLog");
 const { formatWorkLogRecord } = require("../utils/format");
 const { getKey, decryptKey } = require("../utils/configBuilder");
-
-const logFile = todayFile();
 
 async function post(options) {
   const configExists = exists(configFile());
@@ -15,8 +13,24 @@ async function post(options) {
     return;
   }
 
+  let logFile;
+  let logDescription = "today";
+
+  if (options.y) {
+    logFile = yesterdayFile(options.tag);
+    logDescription = "yesterday";
+  } else if (options.offset) {
+    const offset = parseInt(options.offset);
+    logFile = fileDaysAgo(offset, options.tag);
+    logDescription = `${offset} days ago`;
+  } else {
+    logFile = todayFile(options.tag);
+  }
+
+  const tagInfo = options.tag ? ` (tag: ${options.tag})` : '';
+
   if (!exists(logFile)) {
-    console.log("No log for today. Run [jira log] first");
+    console.log(`No log for ${logDescription}${tagInfo}. Run [jira log] first`);
     return;
   }
 
@@ -44,26 +58,26 @@ async function post(options) {
 
   let daysOffset = 0;
   let targetDate = getTodayAt(9);
-  
+
   if(options.y){
     daysOffset = 1;
     targetDate = getDayAt(9, 1);
   }
-  
+
   if(options.offset){
     daysOffset = parseInt(options.offset);
     targetDate = getDayAt(9, daysOffset);
   }
-  
+
   if(options.date){
     daysOffset = undefined;
     targetDate = getTargetDate(options.date);
   }
 
   const confirmMessage = getConfirmationMessage(daysOffset, targetDate);
-  
+
   await startPost(config, text, totalHoursToday, targetDate, confirmMessage);
-  
+
 }
 
 const startPost = async (config, text, totalHoursToday, date, confirmMessage) => {
@@ -72,9 +86,9 @@ const startPost = async (config, text, totalHoursToday, date, confirmMessage) =>
     const baseUrl = `${config.baseUrl}/rest/api/2/issue`;
     const taskId = config.taskId;
     const url = `${baseUrl}/${taskId}/worklog`;
-    
+
     let key = decryptKey(config.key);
-    
+
     if(!key){
       const password = await askForSecret('enter your password (It will NOT be saved anywhere by jiralog)')
       key = getKey(config.login, password);

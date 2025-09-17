@@ -20,26 +20,30 @@ program
   .command("today")
   .alias("t")
   .description("Lists all today's logs")
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .action(today);
 program
   .command("yesterday")
   .alias("y")
   .description("Lists all yesterday's logs")
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .action(yesterday);
 program
   .command("log <hours> <activity>")
   .description("Logs activity")
   .alias("l")
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .action(log);
 
-program.command("drop").description("Drops todays log").action(drop);
-program.command("remove").description("Removes log item").action(remove);
-program.command("edit").alias("e").description("Edits log item").action(edit);
+program.command("drop").description("Drops todays log").option('-t, --tag <tag>', 'specify tag for worklog').action(drop);
+program.command("remove").description("Removes log item").option('-t, --tag <tag>', 'specify tag for worklog').action(remove);
+program.command("edit").alias("e").description("Edits log item").option('-t, --tag <tag>', 'specify tag for worklog').action(edit);
 program.command("post")
   .description("Posts log to jira server")
   .option('-y', 'yesterday')
   .option('-d, --date <year>-<month>-<day>/<month>-<day>/<day>', 'offset in past (in days)')
   .option('-o, --offset <int>', 'offset in past (in days)')
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .action(post);
 
 program
@@ -55,6 +59,7 @@ program
   .command("j")
   .argument("[alias]")
   .option("-d")
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .description("J command")
   .action(jCommand);
 
@@ -75,6 +80,7 @@ program
   .alias("r")
   .description("Reports worklogs")
   .option('-d, --days <number>', 'creates report for number of last days')
+  .option('-t, --tag <tag>', 'specify tag for worklog')
   .action(report);
 
 program.parse();

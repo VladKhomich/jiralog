@@ -1,5 +1,5 @@
 const { dateDaysAgo } = require("../utils/date");
-const { exists, read, fileDaysAgo } = require("../utils/file");
+const { exists, read, fileDaysAgo, getAllFilesForDate } = require("../utils/file");
 const { writeDay } = require("../utils/loggers");
 
 function report(options) {
@@ -10,18 +10,45 @@ function report(options) {
   const days = +options.days;
 
   for (let i = days - 1; i >= 0; i--) {
+    const dateStr = dateDaysAgo(i);
 
-    const file = fileDaysAgo(i);
-    if (!exists(file)) {
-      console.log(`📅 Log for: ${dateDaysAgo(i)}`);
-      console.log(`No work log found for ${i} days ago`);
-      console.log('');
-      continue;
+    if (options.tag) {
+      const file = fileDaysAgo(i, options.tag);
+      if (!exists(file)) {
+        console.log(`📅 Log for: ${dateStr} (tag: ${options.tag})`);
+        console.log(`No work log found for ${i} days ago with tag: ${options.tag}`);
+        console.log('');
+        continue;
+      }
+      const data = read(file);
+      console.log(`📅 Log for: ${dateStr} (tag: ${options.tag})`);
+      writeDay(data);
+    } else {
+      const allFiles = getAllFilesForDate(dateStr);
+
+      if (allFiles.length === 0) {
+        console.log(`📅 Log for: ${dateStr}`);
+        console.log(`No work log found for ${i} days ago`);
+        console.log('');
+        continue;
+      }
+
+      allFiles.forEach((fileInfo, index) => {
+        const data = read(fileInfo.path);
+        if (fileInfo.tag) {
+          console.log(`📅 Log for: ${dateStr} (tag: ${fileInfo.tag})`);
+        } else {
+          console.log(`📅 Log for: ${dateStr}`);
+        }
+        writeDay(data);
+
+        if (index < allFiles.length - 1) {
+          console.log('');
+        }
+      });
     }
-    const data = read(file);
-    console.log(`📅 Log for: ${dateDaysAgo(i)}`)
-    writeDay(data);
 
+    console.log('');
   }
 }
 

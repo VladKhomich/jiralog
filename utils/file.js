@@ -24,13 +24,15 @@ function remove(file) {
   fs.rmSync(file);
 }
 
-function todayFile() {
+function todayFile(tag) {
   const today = new Date().toISOString().slice(0, 10);
-  const fileName = `${today.replace(/-/g, "_")}.jira`;
+  const fileName = tag
+    ? `${today.replace(/-/g, "_")}.${tag}.jira`
+    : `${today.replace(/-/g, "_")}.jira`;
   return path.join(getDirectory(), fileName);
 }
 
-function yesterdayFile() {
+function yesterdayFile(tag) {
   const toDayOfTheWeek = new Date(Date.now()).getDay();
   const dayOffset = 24 * 3600 * 1000;
   var offset = 0;
@@ -47,14 +49,18 @@ function yesterdayFile() {
   }
 
   const yday = new Date(Date.now() - offset).toISOString().slice(0, 10);
-  const fileName = `${yday.replace(/-/g, "_")}.jira`;
+  const fileName = tag
+    ? `${yday.replace(/-/g, "_")}.${tag}.jira`
+    : `${yday.replace(/-/g, "_")}.jira`;
   return path.join(getDirectory(), fileName);
 }
 
-function fileDaysAgo(days) {
+function fileDaysAgo(days, tag) {
   const offset = 24 * 3600 * 1000 * days;
   const yday = new Date(Date.now() - offset).toISOString().slice(0, 10);
-  const fileName = `${yday.replace(/-/g, "_")}.jira`;
+  const fileName = tag
+    ? `${yday.replace(/-/g, "_")}.${tag}.jira`
+    : `${yday.replace(/-/g, "_")}.jira`;
   return path.join(getDirectory(), fileName);
 }
 
@@ -78,6 +84,32 @@ function getDirectory() {
   return d;
 }
 
+function getAllFilesForDate(dateStr) {
+  const directory = getDirectory();
+  const datePrefix = dateStr.replace(/-/g, "_");
+
+  try {
+    const files = fs.readdirSync(directory);
+    return files
+      .filter(file => file.startsWith(datePrefix) && file.endsWith('.jira'))
+      .map(file => {
+        const fullPath = path.join(directory, file);
+        const parts = file.split('.');
+        if (parts.length === 2) {
+          // No tag: date.jira
+          return { path: fullPath, tag: null, file };
+        } else if (parts.length === 3) {
+          // With tag: date.tag.jira
+          return { path: fullPath, tag: parts[1], file };
+        }
+        return null;
+      })
+      .filter(Boolean);
+  } catch (error) {
+    return [];
+  }
+}
+
 module.exports.exists = exists;
 module.exports.read = read;
 module.exports.write = write;
@@ -89,3 +121,4 @@ module.exports.configFile = configFile;
 module.exports.formatsFile = formatsFile;
 module.exports.templatesFile = templatesFile;
 module.exports.fileDaysAgo = fileDaysAgo;
+module.exports.getAllFilesForDate = getAllFilesForDate;

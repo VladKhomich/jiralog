@@ -1,17 +1,37 @@
-const { yesterdayFile, exists, read } = require("../utils/file");
+const { yesterdayFile, exists, read, getAllFilesForDate } = require("../utils/file");
 const { writeDay } = require("../utils/loggers");
+const { dateDaysAgo } = require("../utils/date");
 
-function yesterday() {
-  const file = yesterdayFile();
-  if (!exists(yesterdayFile(file))) {
-    console.log("no work log for yesterday");
-    return;
-  }
-  if (exists(file)) {
-    const data = read(file);
-    writeDay(data);
+function yesterday(options = {}) {
+  if (options.tag) {
+    // Show specific tag
+    const file = yesterdayFile(options.tag);
+    if (exists(file)) {
+      const data = read(file);
+      console.log(`📅 Yesterday's log (tag: ${options.tag}):`);
+      writeDay(data);
+    } else {
+      console.log(`no logged work yesterday for tag: ${options.tag}`);
+    }
   } else {
-    console.log("no logged work yesterday");
+    const yesterday = dateDaysAgo(1);
+    const allFiles = getAllFilesForDate(yesterday);
+
+    if (allFiles.length === 0) {
+      console.log("no work log for yesterday");
+      return;
+    }
+
+    allFiles.forEach(fileInfo => {
+      const data = read(fileInfo.path);
+      if (fileInfo.tag) {
+        console.log(`📅 Yesterday's log (tag: ${fileInfo.tag}):`);
+      } else {
+        console.log(`📅 Yesterday's log:`);
+      }
+      writeDay(data);
+      console.log('');
+    });
   }
 }
 

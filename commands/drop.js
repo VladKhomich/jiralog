@@ -1,17 +1,21 @@
 const { askForConfirmation } = require("../utils/askFor");
 const { exists, remove, todayFile } = require("../utils/file");
 
-const file = todayFile();
+async function drop(options = {}) {
+  const file = todayFile(options.tag);
+  const tagInfo = options.tag ? ` for tag: ${options.tag}` : '';
 
-async function drop() {
+  if (!exists(file)) {
+    console.log(`No worklog found for today${tagInfo}`);
+    return;
+  }
+
   var confirmation = await askForConfirmation(
-    "Do you want to remove worklog for today?"
+    `Do you want to remove worklog for today${tagInfo}?`
   );
   if (confirmation) {
-    if (exists(file)) {
-      remove(file);
-      console.log("Removed logged work for today");
-    }
+    remove(file);
+    console.log(`Removed logged work for today${tagInfo}`);
   }
 }
 

@@ -214,6 +214,58 @@ Allows user edit created formats.
 
 In order to check entered scenarios use `jira format --check`. In case it's required to reset formats to default use `jira format --default`.
 
+## Tags
+
+Tags allow you to organize your worklogs into different categories or projects. When using tags, worklog files are saved with the format `<date>.<tag>.jira` instead of just `<date>.jira`.
+
+### Usage
+
+Most commands support the `--tag` or `-t` option to specify a tag:
+
+```bash
+# Log work with a specific tag
+jira log 2 "Fixed authentication bug" --tag backend
+jira j daily --tag frontend
+
+# View worklogs by tag
+jira today --tag backend
+jira yesterday --tag frontend
+jira report --days 7 --tag backend
+
+# Edit/remove entries from tagged worklogs
+jira edit --tag backend
+jira remove --tag frontend
+
+# Post tagged worklogs to JIRA
+jira post --tag backend
+jira post -y --tag frontend  # yesterday's frontend work
+```
+
+### Behavior
+
+- **Without tags**: Commands work with the default worklog file (backward compatible)
+- **With tags**: Commands work with tag-specific worklog files
+- **Viewing all tags**: When no tag is specified for `today`, `yesterday`, or `report` commands, all available tags for that date are displayed
+- **File organization**: Tagged files are stored as `2024_01_15.backend.jira`, `2024_01_15.frontend.jira`, etc.
+
+### Examples
+
+```bash
+# Log different types of work
+jira log 3 "API development" --tag backend
+jira log 2 "UI improvements" --tag frontend
+jira log 1 "Code review" --tag review
+
+# View all work for today (shows all tags)
+jira today
+
+# View only backend work for today
+jira today --tag backend
+
+# Generate report for backend work over last 5 days
+jira report --days 5 --tag backend
+```
+
 ## Input date as a parameter
 
 > Different input types are possible
