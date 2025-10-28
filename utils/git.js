@@ -2,7 +2,7 @@ const { execSync } = require('child_process');
 const fs = require("fs");
 const path = require('path');
 
-const ticketRegex = /#\d+/g;
+const ticketRegex = /#\d+|[A-Z]+-?\d+/g;
 
 function getGlobalGitUserEmail(){
     return execSync('git config --global user.email').toString().trim();
@@ -16,12 +16,12 @@ function getAllRepos(repoDir){
         const repoPath = path.join(repoDir, dirent.name);
         return (dirent.isDirectory() && fs.existsSync(path.join(repoPath, '.git')));
     });
-    
+
     return repos.map(repo => {
         return {
             name: repo.name,
             path: path.join(repoDir, repo.name),
-        }            
+        }
     })
 }
 
@@ -39,7 +39,7 @@ function getAllContributions(date, repoDir, userEmail){
                     contributions.push(
                         {
                             repo: repo.name,
-                            tickets: tickets ? tickets.map(ticket => ticket.replace('#','')): undefined,
+                            tickets: tickets ? tickets.map(ticket => ticket.startsWith('#') ? ticket.replace('#','') : ticket): undefined,
                             details: commitTitle,
                         });
                 }
